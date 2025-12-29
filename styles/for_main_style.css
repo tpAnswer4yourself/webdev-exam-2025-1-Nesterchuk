@@ -1,0 +1,55 @@
+body {
+    font-size: 20px;
+    margin-top: 6rem;
+}
+
+.navbar {
+    background-color: rgb(30, 126, 250);
+    display: block;
+}
+
+.navbar-brand, .nav-link {
+    color: aliceblue;
+    transition: 0.1s ease-in;
+}
+
+.navbar-toggler {
+    color: aliceblue;
+}
+
+.information {
+    margin: 6rem 6rem;
+}
+
+.alers {
+    margin: 2rem 0rem;
+}
+
+.alerts_block {
+    background-color: rgb(199, 242, 241);
+    border-radius: 18px;
+    padding: 0.75rem;
+    text-align: left;
+    align-items: center;
+}
+
+.alerts_block p {
+    margin: auto;
+}
+
+.info_block {
+    margin: 2rem 0rem;
+}
+
+.cont_advantage {
+    margin-top: 1rem;
+    transition: 0.15s ease-in;
+}
+
+.cont_advantage:hover {
+    transform: translateY(-5px) scale(1.05);
+}
+
+.iconnn {
+    color: rgb(30, 126, 250);
+}
