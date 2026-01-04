@@ -12,9 +12,10 @@
         crossorigin="anonymous"></script>
     <link rel="stylesheet" href="..\styles\for_main_style.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <script src="..\scripts\main.js"></script>
 </head>
 
-<body>
+<body class="d-flex flex-column min-vh-100">
     <!--- шапка-хэдэр  -->
     <nav class="navbar navbar-expand-lg navbar-light shadow-sm fixed-top">
         <div class="container">
@@ -22,8 +23,6 @@
                 LANGWORLD
                 <i class="bi bi-globe-americas"></i>
             </a>
-
-
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -47,124 +46,219 @@
         </div>
     </nav>
 
-    <section class="information">
-        <section class="alers">
-            <div class="alerts_block">
-                <p>Добро пожаловать! Новые курсы доступны уже в этом месяце!</p>
-            </div>
-        </section>
-        <section class="about_school">
-            <div class="info_block">
-                <h3 class="fw-bold">О нашей языковой школе</h3>
-                <p>Наша цель - дать ученикам настоящие знания, которые с легкость можно применять на практике.
-                    Сформировать умения и навыки, необходимые для полноценного освоения учебного предмета. Это требует
-                    чёткой формулировки целей, постановки задач, выбора методов обучения и оценки усвоения знаний.</p>
-            </div>
-            <div class="info_block">
-                <h3 class="fw-bold">Плюсы изучения русского языка</h3>
-                <div class="container">
-                    <div class="row g-12">
-                        <div class="col-md-4 text-center cont_advantage">
-                            <i class="bi bi-person-arms-up display-2 mb-3 iconnn"></i>
-                            <h4 class="fw-semibold">Глобальный язык</h4>
-                            <p>Русский язык широко распространен во всем мире.</p>
+    <main class="flex-grow-1">
+        <div class="container">
+            <section class="information">
+                <section class="alers">
+                    <div class="alerts_block" id="alertsBlock">
+                        <p>Добро пожаловать! Новые курсы доступны уже в этом месяце!</p>
+                    </div>
+                </section>
+                <section class="about_school">
+                    <div class="info_block">
+                        <h3 class="fw-bold">О нашей языковой школе</h3>
+                        <p>Наша цель - дать ученикам настоящие знания, которые с легкость можно применять на практике.
+                            Сформировать умения и навыки, необходимые для полноценного освоения учебного предмета. Это
+                            требует
+                            чёткой формулировки целей, постановки задач, выбора методов обучения и оценки усвоения
+                            знаний.</p>
+                    </div>
+                    <div class="info_block">
+                        <h3 class="fw-bold">Плюсы изучения русского языка</h3>
+                        <div class="container">
+                            <div class="row g-12">
+                                <div class="col-md-4 text-center cont_advantage">
+                                    <i class="bi bi-person-arms-up display-2 mb-3 iconnn"></i>
+                                    <h4 class="fw-semibold">Глобальный язык</h4>
+                                    <p>Русский язык широко распространен во всем мире.</p>
+                                </div>
+                                <div class="col-md-4 text-center cont_advantage">
+                                    <i class="bi bi-wechat display-2 mb-3 iconnn"></i>
+                                    <h4 class="fw-semibold">Богатая культура</h4>
+                                    <p>Глубже понять русскую литературу и искусство.</p>
+                                </div>
+                                <div class="col-md-4 text-center cont_advantage">
+                                    <i class="bi bi-clipboard-data display-2 mb-3 iconnn"></i>
+                                    <h4 class="fw-semibold">Карьерные возможности</h4>
+                                    <p>Откройте для себя перспективы карьерного роста за рубежом.</p>
+                                </div>
+                            </div>
                         </div>
-                        <div class="col-md-4 text-center cont_advantage">
-                            <i class="bi bi-wechat display-2 mb-3 iconnn"></i>
-                            <h4 class="fw-semibold">Богатая культура</h4>
-                            <p>Глубже понять русскую литературу и искусство.</p>
+                    </div>
+                </section>
+                <section class="offered_courses">
+                    <div class="block_courses">
+                        <h3 class="fw-bold">Предлагаемые курсы</h3>
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover" id="coursesTable">
+                                <thead class="table-primary">
+                                    <tr>
+                                        <th>Название</th>
+                                        <th>Уровень</th>
+                                        <th>Продолжительность (недели)</th>
+                                        <th>Стоимость/час (руб)</th>
+                                        <th>Действия</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
                         </div>
-                        <div class="col-md-4 text-center cont_advantage">
-                            <i class="bi bi-clipboard-data display-2 mb-3 iconnn"></i>
-                            <h4 class="fw-semibold">Карьерные возможности</h4>
-                            <p>Откройте для себя перспективы карьерного роста за рубежом.</p>
+                        <div id="coursesPagination"></div>
+                    </div>
+                </section>
+
+                <section class="search_courses mb-5">
+                    <div class="block_courses">
+                        <h3 class="fw-bold">Поиск курсов</h3>
+                        <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
+                            <input type="search" class="form-control mb-3" id="courseSearchInput"
+                                placeholder="По названию..." aria-label="Search">
+                            <select class="form-select mb-3" id="courseLevelFilter">
+                                <option value="">Все уровни</option>
+                                <option value="Beginner">Начальный</option>
+                                <option value="Intermediate">Средний</option>
+                                <option value="Advanced">Продвинутый</option>
+                            </select>
+                        </form>
+                        <button class="btn btn-primary rounded-pill px-3" type="button"
+                            id="searchCoursesBtn">Найти</button>
+                    </div>
+                </section>
+
+                <section class="offered_courses">
+                    <div class="block_courses mb-5">
+                        <h3 class="fw-bold">Доступные репетиторы</h3>
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover" id="tutorsTable">
+                                <thead class="table-primary">
+                                    <tr>
+                                        <th>Фото</th>
+                                        <th>Имя</th>
+                                        <th>Уровень</th>
+                                        <th>Языки</th>
+                                        <th>Опыт (лет)</th>
+                                        <th>Ставка (руб/час)</th>
+                                        <th>Выбор</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                        <div id="tutorsPagination"></div>
+                        <button class="btn btn-success rounded-pill px-3" type="button" id="enrollBtn">Записаться на
+                            занятие</button>
+                    </div>
+                </section>
+
+                <section class="search_courses mb-5">
+                    <div class="block_courses">
+                        <h3 class="fw-bold">Найти репетитора</h3>
+                        <form class="p-2 mb-2">
+                            <select class="form-select mb-3" id="tutorLanguageFilter">
+                                <option value="">Все языки</option>
+                                <option value="Russian">Русский</option>
+                                <option value="English">Английский</option>
+                                <option value="Spanish">Испанский</option>
+                                <!-- Добавь больше по API -->
+                            </select>
+                            <input type="number" class="form-control mb-3" id="tutorExperienceFilter"
+                                placeholder="Мин. опыт (лет)" min="0">
+                            <button class="btn btn-primary rounded-pill px-3" type="button"
+                                id="searchTutorsBtn">Найти</button>
+                        </form>
+                    </div>
+                </section>
+
+                <section class="map-resources mb-5">
+                    <h3 class="fw-bold">Интерактивные ресурсы</h3>
+                    <div id="map" style="height: 400px;"></div>
+                </section>
+            </section>
+
+            <!-- Modal для заявки (общая для курсов/репетиторов) -->
+            <div class="modal fade" id="applyModal" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modalTitle">Оформление заявки</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="applyForm">
+                                <div class="mb-3">
+                                    <label for="courseName" class="form-label">Название курса / Репетитор</label>
+                                    <input type="text" class="form-control" id="courseName" readonly>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="tutorName" class="form-label">Преподаватель</label>
+                                    <input type="text" class="form-control" id="tutorName" readonly>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="startDate" class="form-label">Дата начала</label>
+                                    <select class="form-select" id="startDate">
+                                        <!-- JS заполнит unique dates -->
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="timeSlot" class="form-label">Время занятия</label>
+                                    <select class="form-select" id="timeSlot" disabled>
+                                        <!-- JS заполнит times for date -->
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="duration" class="form-label">Продолжительность (часы)</label>
+                                    <input type="text" class="form-control" id="duration" readonly>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="studentsNum" class="form-label">Кол-во студентов (1-20)</label>
+                                    <input type="number" class="form-control" id="studentsNum" min="1" max="20"
+                                        value="1">
+                                </div>
+                                <div class="mb-3">
+                                    <h6>Доп. опции</h6>
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" id="supplementary">
+                                        <label class="form-check-label" for="supplementary">Доп. материалы (+2000
+                                            руб/студент)</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" id="personalized">
+                                        <label class="form-check-label" for="personalized">Индивидуальные занятия (+1500
+                                            руб/неделя)</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" id="excursions">
+                                        <label class="form-check-label" for="excursions">Культурные экскурсии
+                                            (+25%)</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" id="assessment">
+                                        <label class="form-check-label" for="assessment">Оценка уровня (+300
+                                            руб)</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" id="interactive">
+                                        <label class="form-check-label" for="interactive">Интерактивная платформа
+                                            (+50%)</label>
+                                    </div>
+                                    <!-- Auto опции показываем как плашки -->
+                                    <div id="autoOptions" class="mt-3"></div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="totalCost" class="form-label">Общая стоимость (руб)</label>
+                                    <input type="text" class="form-control" id="totalCost" readonly>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                            <button type="button" class="btn btn-primary" id="submitApply">Отправить</button>
                         </div>
                     </div>
                 </div>
             </div>
-        </section>
-        <section class="offered_courses">
-            <div class="block_courses">
-                <h3 class="fw-bold">Предлагаемые курсы</h3>
-                <ul class="dropdown-menu position-static d-grid gap-1 p-2 rounded-3 mx-0 shadow w-220px mb-5"
-                    data-bs-theme="light">
-                    <li><a class="dropdown-item rounded-2" href="#">ффф</a></li>
-                    <li><a class="dropdown-item rounded-2" href="#">ффф</a></li>
-                    <li><a class="dropdown-item rounded-2" href="#">ффф</a></li>
-                    <li>
-                        <hr class="dropdown-divider">
-                    </li>
-                    <li><a class="dropdown-item rounded-2" href="#">ффф</a></li>
-                </ul>
-                <!-- здесь подгружаться будет с js-->
-            </div>
-        </section>
-
-        <section class="search_courses mb-5">
-            <div class="block_courses">
-                <h3 class="fw-bold">Поиск курсов</h3>
-                <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
-                    <input type="search" class="form-control" placeholder="Search..." aria-label="Search">
-                </form>
-                <button class="btn btn-primary rounded-pill px-3" type="button">Найти</button>
-                <!-- здесь подгружаться будет с js-->
-            </div>
-        </section>
-
-        <section class="offered_courses">
-            <div class="block_courses mb-5">
-                <h3 class="fw-bold">Доступные репетиторы</h3>
-                <ul class="dropdown-menu position-static d-grid gap-1 p-2 rounded-3 mx-0 shadow w-220px mb-3"
-                    data-bs-theme="light">
-                    <li><a class="dropdown-item rounded-2" href="#">ффф</a></li>
-                    <li><a class="dropdown-item rounded-2" href="#">ффф</a></li>
-                    <li><a class="dropdown-item rounded-2" href="#">ффф</a></li>
-                    <li>
-                        <hr class="dropdown-divider">
-                    </li>
-                    <li><a class="dropdown-item rounded-2" href="#">ффф</a></li>
-                </ul>
-                <button class="btn btn-success rounded-pill px-3" type="button">Записаться на занятие</button>
-                <!-- здесь подгружаться будет с js-->
-            </div>
-        </section>
-
-        <section class="search_courses">
-            <div class="block_courses">
-                <h3 class="fw-bold">Найти репетитора</h3>
-                <div class="dropdown-menu d-block position-static pt-0 mx-0 rounded-3 shadow overflow-hidden w-280px"
-                    data-bs-theme="light">
-                    <form class="p-2 mb-2 bg-body-tertiary border-bottom"> <input type="search" class="form-control"
-                            autocomplete="false" placeholder="Type to filter..."> </form>
-                    <ul class="list-unstyled mb-0">
-                        <li><a class="dropdown-item d-flex align-items-center gap-2 py-2" href="#"> <span
-                                    class="d-inline-block bg-success rounded-circle p-1"></span>
-                                Action
-                            </a></li>
-                        <li><a class="dropdown-item d-flex align-items-center gap-2 py-2" href="#"> <span
-                                    class="d-inline-block bg-primary rounded-circle p-1"></span>
-                                Another action
-                            </a></li>
-                        <li><a class="dropdown-item d-flex align-items-center gap-2 py-2" href="#"> <span
-                                    class="d-inline-block bg-danger rounded-circle p-1"></span>
-                                Something else here
-                            </a></li>
-                        <li><a class="dropdown-item d-flex align-items-center gap-2 py-2" href="#"> <span
-                                    class="d-inline-block bg-info rounded-circle p-1"></span>
-                                Separated link
-                            </a></li>
-                    </ul>
-                    <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
-                        <input type="search" class="form-control" placeholder="Search..." aria-label="Search">
-                    </form>
-                    <button class="btn btn-primary rounded-pill px-3" type="button">Найти</button>
-                </div>
-
-                <!-- здесь подгружаться будет с js-->
-            </div>
-        </section>
-    </section>
-
+        </div>
+    </main>
 
     <!--- подвал -->
     <footer class="bg-black text-white py-4 text-center mb-auto" id="footer">
