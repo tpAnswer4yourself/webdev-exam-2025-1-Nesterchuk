@@ -43,11 +43,34 @@ body {
 
 .cont_advantage {
     margin-top: 1rem;
-    transition: 0.15s ease-in;
+    transition: 0.2s ease-in;
+    border-radius: 35px;
 }
 
 .cont_advantage:hover {
     transform: translateY(-5px) scale(1.05);
+    background-color: rgba(226, 235, 255, 0.463);
+}
+
+.user_func {
+    padding: 1rem;
+}
+
+.user_func a{
+    text-decoration: none;
+    color: black;
+}
+
+.exit-cont .bi {
+    color: rgb(199, 22, 22);
+}
+
+.exit-cont:hover {
+    background-color: rgba(255, 215, 215, 0.539);
+}
+
+.user_func:hover {
+    cursor: pointer;
 }
 
 .iconnn {
