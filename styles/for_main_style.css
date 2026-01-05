@@ -1,6 +1,6 @@
 body {
     font-size: 20px;
-    margin-top: 6rem;
+    margin-top: 4rem;
 }
 
 .navbar {
@@ -15,10 +15,6 @@ body {
 
 .navbar-toggler {
     color: aliceblue;
-}
-
-.information {
-    margin: 6rem 6rem;
 }
 
 .alers {
@@ -126,6 +122,29 @@ main {
     border-radius: 20px;
     vertical-align: middle;
     margin-bottom: 6rem;
+}
+
+/* Для модалок */
+.modal-content {
+    border-radius: 15px;
+}
+
+.modal-header {
+    background-color: rgba(190, 196, 255, 0.81);
+}
+
+/* Для карты */
+#map {
+    border: 1px solid #ccc;
+    border-radius: 10px;
+}
+
+/* Auto плашки для опций */
+.auto-plaque {
+    background-color: rgba(0, 255, 0, 0.2);
+    padding: 5px;
+    border-radius: 5px;
+    margin-bottom: 5px;
 }
 
 @media (max-width: 876px) {
