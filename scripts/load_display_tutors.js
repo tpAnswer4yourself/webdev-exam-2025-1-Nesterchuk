@@ -1,61 +1,60 @@
-document.addEventListener('DOMContentLoaded', () =>{
-    // Function to load and display courses
+document.addEventListener('DOMContentLoaded', () => {
     const API_KEY = '93f2f89f-4f0d-4dda-ba66-ae4884769bb4';
-    const API_URL_COURSES = `http://exam-api-courses.std-900.ist.mospolytech.ru/api/courses?api_key=${API_KEY}`; //get_courses
-    
-    let courses_data = [];
-    const per_page = 3;
+    const API_URL_TUTORS = `http://exam-api-courses.std-900.ist.mospolytech.ru/api/tutors?api_key=${API_KEY}`; //get_tutors
 
-    async function loaded_courses() {
+    let tutors_data = [];
+    const per_page = 5;
+
+    async function loaded_tutors() {
         try {
-            const response = await fetch(API_URL_COURSES);
+            const response = await fetch(API_URL_TUTORS);
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
-            courses_data = await response.json();
-            DisplayCourses(1);
+            tutors_data = await response.json();
+            console.log('Попытка не птыка')
+            DisplayTutors(1);
         }
         catch (error) {
-            console.error('Error fetching courses data:', error);
+            console.error('Error fetching tutors data:', error);
         }
     };
+
 
     function paginate(data, page) {
         const start = (page - 1) * per_page;
         return data.slice(start, start + per_page);
     };
 
-    function DisplayCourses(page = 1) {
-        const tbody = document.querySelector('#coursesTable tbody');
+    function DisplayTutors(page = 1) {
+        const tbody = document.querySelector('#tutorsTable tbody');
         tbody.innerHTML = '';
 
-        const paginatedCourses = paginate(courses_data, page);
-        paginatedCourses.forEach(course => {
+        const paginatedTutors = paginate(tutors_data, page);
+        paginatedTutors.forEach(tutor => {
             const tr = document.createElement('tr');
             tr.innerHTML = `
-                <td>${course.id}</td>
-                <td>${course.name}</td>
-                <td>${course.level}</td>
-                <td>${course.description}</td>
-                <td>${course.teacher}</td>
-                <td>${course.course_fee_per_hour} руб/ч.</td>
-                <td><button class="btn btn-primary btn-sm apply-btn" data-id="${course.id}">Подать заявку</button></td>
+                <td>${tutor.name}</td>
+                <td>${tutor.work_experience}</td>
+                <td>${tutor.languages_spoken}</td>
+                <td>${tutor.price_per_hour}</td>
+                <td><button class="btn btn-primary btn-sm apply-btn" data-id="${tutor.id}">Записаться</button></td>
             `;
             tbody.appendChild(tr);
         });
 
         document.querySelectorAll('.apply-btn').forEach(btn => {
             btn.addEventListener('click', () => {
-                const courseId = btn.dataset.id;
-                console.log(`Заявка на курс ID: ${courseId}`);
+                const tutor_id = btn.dataset.id;
+                console.log(`Заявка на курс ID: ${tutor_id}`);
             });
         });
 
-        render_pagination(Math.ceil(courses_data.length / per_page), page);
+        render_pagination(Math.ceil(tutors_data.length / per_page), page);
     }
 
     function render_pagination(totalPages, currentPage) {
-        const paginationDiv = document.getElementById('coursesPagination');
+        const paginationDiv = document.getElementById('tutorsPagination');
         paginationDiv.innerHTML = '';
 
         const ul = document.createElement('ul');
@@ -78,5 +77,5 @@ document.addEventListener('DOMContentLoaded', () =>{
         paginationDiv.appendChild(ul);
     };
 
-    loaded_courses();
-})
+    loaded_tutors();
+});

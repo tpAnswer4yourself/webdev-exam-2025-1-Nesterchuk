@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="..\styles\for_main_style.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
     <script src="..\scripts\load_display_courses.js"></script>
+    <script src="..\scripts\load_display_tutors.js"></script>
 </head>
 
 <body class="d-flex flex-column min-vh-100">
@@ -93,7 +94,7 @@
                 <!---ПРЕДЛАГАЕМЫЕ КУРСЫ--->
                 <section class="offered_courses">
                     <div class="block_courses mb-5">
-                        <h3 class="fw-bold mb-2">Предлагаемые курсы</h3>
+                        <h3 class="fw-bold mb-4">Предлагаемые курсы</h3>
                         <div class="table-responsive">
                             <table class="table table-striped table-hover" id="coursesTable">
                                 <thead class="table-primary">
@@ -141,13 +142,11 @@
                             <table class="table table-striped table-hover" id="tutorsTable">
                                 <thead class="table-primary">
                                     <tr>
-                                        <th>Фото</th>
                                         <th>Имя</th>
-                                        <th>Уровень</th>
-                                        <th>Языки</th>
                                         <th>Опыт (лет)</th>
+                                        <th>Языки</th>
                                         <th>Ставка (руб/час)</th>
-                                        <th>Выбор</th>
+                                        <th>Действия</th>
                                     </tr>
                                 </thead>
                                 <tbody></tbody>
@@ -157,6 +156,7 @@
                         <button class="btn btn-success rounded-pill px-3" type="button" id="enrollBtn">Записаться на
                             занятие</button>
                     </div>
+
                 </section>
 
                 <!---ПОИСК РЕПЕТИТОРА--->
