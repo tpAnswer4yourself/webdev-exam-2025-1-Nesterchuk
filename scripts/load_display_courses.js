@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () =>{
     // Function to load and display courses
     const API_KEY = '93f2f89f-4f0d-4dda-ba66-ae4884769bb4';
-    const API_URL_COURSES = `http://exam-api-courses.std-900.ist.mospolytech.ru/api/courses?api_key=${API_KEY}`; //get_courses
+    const API_URL_COURSES = `https://exam-api-courses.std-900.ist.mospolytech.ru/api/courses?api_key=${API_KEY}`; //get_courses
     
     let courses_data = [];
     const per_page = 5;

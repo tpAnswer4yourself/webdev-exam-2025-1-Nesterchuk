@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     const API_KEY = '93f2f89f-4f0d-4dda-ba66-ae4884769bb4';
-    const API_URL_TUTORS = `http://exam-api-courses.std-900.ist.mospolytech.ru/api/tutors?api_key=${API_KEY}`; //get_tutors
+    const API_URL_TUTORS = `https://exam-api-courses.std-900.ist.mospolytech.ru/api/tutors?api_key=${API_KEY}`; //get_tutors
 
     let tutors_data = [];
     const per_page = 5;
