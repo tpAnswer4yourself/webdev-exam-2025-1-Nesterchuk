@@ -10,11 +10,12 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
         crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="..\styles\for_main_style.css">
+    <link rel="stylesheet" href="../styles/for_main_style.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
-    <script src="..\scripts\paginate.js"></script>
-    <script src="..\scripts\load_display_courses.js"></script>
-    <script src="..\scripts\load_display_tutors.js"></script>
+    <script src="../scripts/paginate.js"></script>
+    <script src="../scripts/load_display_courses.js"></script>
+    <script src="../scripts/load_display_tutors.js"></script>
+    <script src="../scripts/search_tables.js"></script>
 </head>
 
 <body class="d-flex flex-column min-vh-100">
@@ -53,7 +54,8 @@
             <!---БАННЕР - CTA --->
             <div class="px-4 py-5 my-5 text-center rounded-5 banner-hero"
                 style="background-image: url('../media/123.jpg'); background-size: cover; background-position: center; z-index: -1;">
-                <h1 class="display-5 fw-bold banner-langworld text-white">LangWorld</h1>
+                <h1 class="display-5 fw-bold banner-langworld text-white">LangWorld<i
+                        class="bi bi-globe-americas ms-2"></i></h1>
                 <div class="col-lg-6 mx-auto">
                     <p class="fw-semibold mb-4 text-white">Наша языковая школа обучает более 6500 людей по всему миру!
                         Ученики ежедневно
@@ -139,11 +141,11 @@
                 </section>
 
                 <!---ПОИСК КУРСА-->
-                <section class="search_courses mb-5">
+                <section class="search_courses mb-5" id="srch_crs">
                     <h3 class="fw-bold mb-4">Найти курс</h3>
                     <div class="container">
                         <div class="row justify-content-center">
-                            <div class="col-12 col-lg-10 col-xl-8">
+                            <div class="form_search_courses col-12 col-lg-10 col-xl-8">
                                 <form class="row g-2 align-items-end" role="search">
                                     <!-- Поле поиска -->
                                     <div class="col-12 col-md-6 col-lg-6">
@@ -172,6 +174,28 @@
                                         </button>
                                     </div>
                                 </form>
+                            </div>
+                            <div class="result_search_courses mt-5 mb-5" id="searchCoursesResults" style="display: none;">
+                                <h4 class="mb-3">Результаты поиска курсов</h4>
+                                <div class="table-responsive" id="coursesTableContainer">
+                                    <table class="table table-striped table-hover" id="searchCoursesTable">
+                                        <thead class="table-warning">
+                                            <tr>
+                                                <th>Название</th>
+                                                <th>Сложность</th>
+                                                <th>Описание</th>
+                                                <th>Преподователь</th>
+                                                <th>Стоимость</th>
+                                                <th>Действия</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody></tbody>
+                                    </table>
+                                </div>
+                                <div class="empty_courses py-5 text-center" id="emptyCourses" style="display: none;">
+                                    <h4 class="text-muted">В результате поиска ничего не найдено ☹️</h4>
+                                    <p class="text-secondary">Попробуйте изменить фильтры или выбрать другие параметры</p>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -204,11 +228,11 @@
                 </section>
 
                 <!---ПОИСК РЕПЕТИТОРА--->
-                <section class="search_courses mb-5">
+                <section class="search_courses mb-5" id="srch_ttrs">
                     <h3 class="fw-bold mb-4">Найти репетитора</h3>
                     <div class="container">
                         <div class="row justify-content-center">
-                            <div class="col-12 col-lg-10 col-xl-8">
+                            <div class="form_search_tutors col-12 col-lg-10 col-xl-8">
                                 <form class="row g-3 align-items-end" role="search">
                                     <!-- Язык -->
                                     <div class="col-12 col-md-6">
@@ -219,6 +243,10 @@
                                             <option value="Russian">Русский</option>
                                             <option value="English">Английский</option>
                                             <option value="Spanish">Испанский</option>
+                                            <option value="German">Немецкий</option>
+                                            <option value="Italian">Итальянский</option>
+                                            <option value="Japanese">Японский</option>
+                                            <option value="French">Французский</option>
                                         </select>
                                     </div>
 
@@ -238,6 +266,29 @@
                                         </button>
                                     </div>
                                 </form>
+                            </div>
+                            <div class="result_search_tutors mt-5 mb-5" id="searchTutorsResults" style="display: none;">
+                                <h4 class="mb-3">Результаты поиска репетиторов</h4>
+                                <div class="table-responsive" id="tutorsTableContainer">
+                                    <table class="table table-striped table-hover" id="searchTutorsTable">
+                                        <thead class="table-warning">
+                                            <tr>
+                                                <th>Фото</th>
+                                                <th>Имя</th>
+                                                <th>Уровень</th>
+                                                <th>Опыт (лет)</th>
+                                                <th>Языки</th>
+                                                <th>Ставка (руб/час)</th>
+                                                <th>Действия</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody></tbody>
+                                    </table>
+                                </div>
+                                <div class="empty_tutors py-5 text-center" id="emptyTutors" style="display: none;">
+                                    <h4 class="text-muted">В результате поиска ничего не найдено ☹️</h4>
+                                    <p class="text-secondary">Попробуйте изменить фильтры или выбрать другие параметры</p>
+                                </div>
                             </div>
                         </div>
                     </div>

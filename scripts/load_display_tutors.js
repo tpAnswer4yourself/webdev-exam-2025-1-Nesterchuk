@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
             tr.innerHTML = `
                 <td>${tutor.name}</td>
                 <td>${tutor.work_experience}</td>
-                <td>${tutor.languages_spoken}</td>
+                <td>${tutor.languages_offered}</td>
                 <td>${tutor.price_per_hour}</td>
                 <td><button class="btn btn-success btn-sm apply-btn" data-id="${tutor.id}">Записаться</button></td>
             `;
