@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
     const API_KEY = '93f2f89f-4f0d-4dda-ba66-ae4884769bb4';
-    const API_URL_ORDERS = `https://exam-api-courses.std-900.ist.mospolytech.ru/api/orders?api_key=${API_KEY}`; //get_offers'
+    const API_URL_ORDERS = `http://exam-api-courses.std-900.ist.mospolytech.ru/api/orders?api_key=${API_KEY}`; //get_offers'
 
     let orders_data = [];
     const per_page = 5;
@@ -43,15 +43,18 @@ document.addEventListener("DOMContentLoaded", () => {
         tbody.innerHTML = '';
 
         const paginatedOrders = paginate(orders_data, page);
-        paginatedOrders.array.forEach(element => {
+        paginatedOrders.forEach(element => {
             const tr = document.createElement('tr');
             tr.innerHTML = `
-                <td>${element.id}</td>
                 <td>${element.date_start}</td>
                 <td>${element.time_start}</td>
-                <td>${element.duration}</td>
-                <td>${element.price}</td>
-                <td><button class="btn btn-success btn-sm apply-btn" data-id="${element.id}">Записаться</button></td>
+                <td>${element.duration} недель</td>
+                <td>${element.price} рублей</td>
+                <td>
+                    <button class="btn btn-success btn-sm apply-btn" data-id="${element.id}">Смотреть</button>
+                    <button class="btn btn-success btn-sm apply-btn" data-id="${element.id}">Редактировать</button>
+                    <button class="btn btn-success btn-sm apply-btn" data-id="${element.id}">Удалить</button>
+                </td>
             `;
             tbody.appendChild(tr);
         });
