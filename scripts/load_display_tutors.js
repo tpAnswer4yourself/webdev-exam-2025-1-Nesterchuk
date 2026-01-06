@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const API_URL_TUTORS = `http://exam-api-courses.std-900.ist.mospolytech.ru/api/tutors?api_key=${API_KEY}`; //get_tutors
 
     let tutors_data = [];
-    const per_page = 5;
+    const per_page = 3;
 
     async function loaded_tutors() {
         try {
@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <td>${tutor.work_experience}</td>
                 <td>${tutor.languages_spoken}</td>
                 <td>${tutor.price_per_hour}</td>
-                <td><button class="btn btn-primary btn-sm apply-btn" data-id="${tutor.id}">Записаться</button></td>
+                <td><button class="btn btn-success btn-sm apply-btn" data-id="${tutor.id}">Записаться</button></td>
             `;
             tbody.appendChild(tr);
         });
@@ -69,7 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
             a.href = '#';
             a.addEventListener('click', (e) => {
                 e.preventDefault();
-                DisplayCourses(i);
+                DisplayTutors(i);
             });
             li.appendChild(a);
             ul.appendChild(li);

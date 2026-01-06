@@ -147,6 +147,16 @@ main {
     margin-bottom: 5px;
 }
 
+.banner-langworld {
+    filter: drop-shadow(0px 0px 50px rgba(0, 0, 0, 0.5));
+    font-size: 4.5rem;
+    transition: 0.22s ease-in;
+}
+
+.banner-langworld:hover {
+    transform: translateY(-2px) scale(1.1);
+}
+
 @media (max-width: 876px) {
     main {
         margin: 0rem 0rem;
@@ -158,10 +168,16 @@ main {
     .action_buttons {
         gap: 0.1rem;
     }
+    .banner-langworld {
+    font-size: 3rem;
+    }
 }
 
 @media (max-width: 550px) {
     table {
         font-size: calc(1em - 12px);
+    }
+    .banner-langworld {
+    font-size: 2rem;
     }
 }
