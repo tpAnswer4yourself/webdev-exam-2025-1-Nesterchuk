@@ -13,17 +13,29 @@ document.addEventListener('DOMContentLoaded', () =>{
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
             courses_data = await response.json();
-            DisplayCourses(1);
+            check();
         }
         catch (error) {
             console.error('Error fetching courses data:', error);
         }
     };
 
-    function paginate(data, page) {
-        const start = (page - 1) * per_page;
-        return data.slice(start, start + per_page);
-    };
+    function check() {
+        const courses = document.getElementById('dostupnie_kursi');
+        const EmptyRequests = document.getElementById('empty_courses');
+
+        if (courses_data.length === 0) {
+            console.log('Данных нет, пустой контейнер (курсы)');
+            courses.style.display = 'none';
+            EmptyRequests.style.display = 'block';
+        }
+        else {
+            console.log('Данные курсов есть, отображаем таблицу с курсами');
+            courses.style.display = 'block';
+            EmptyRequests.style.display = 'none';
+            DisplayCourses(1);
+        };
+    }
 
     function DisplayCourses(page = 1) {
         const tbody = document.querySelector('#coursesTable tbody');

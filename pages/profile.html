@@ -12,6 +12,8 @@
         crossorigin="anonymous"></script>
     <link rel="stylesheet" href="..\styles\for_main_style.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <script src="..\scripts\paginate.js"></script>
+    <script src="../scripts/load_my_offers.js"></script>
 </head>
 
 <body class="d-flex flex-column min-vh-100">
@@ -62,9 +64,21 @@
                                     <h5 class="fw-semibold">Найти репетитора</h5>
                                 </div>
                                 <div class="col-md-3 text-center cont_advantage user_func">
-                                    <a href="#mycourses">
+                                    <a href="#">
+                                        <i class="bi bi-plus-square display-2 mb-4 iconnn"></i>
+                                        <h5 class="fw-semibold">Записаться на занятие</h5>
+                                    </a>
+                                </div>
+                                <div class="col-md-3 text-center cont_advantage user_func">
+                                    <a href="#offers_courses_my">
                                         <i class="bi bi-card-checklist display-2 mb-4 iconnn"></i>
                                         <h5 class="fw-semibold">Мои занятия</h5>
+                                    </a>
+                                </div>
+                                <div class="col-md-3 text-center cont_advantage user_func">
+                                    <a href="main.html#map_section">
+                                        <i class="bi bi-geo-alt-fill display-2 mb-4 iconnn"></i>
+                                        <h5 class="fw-semibold">Геолокация (доп. задание)</h5>
                                     </a>
                                 </div>
                                 <div class="col-md-3 text-center cont_advantage user_func exit-cont">
@@ -78,125 +92,33 @@
                     </div>
                 </section>
 
-                <div class="table-responsive py-5" id="mycourses">
-                    <h4 class="mb-3">Ваши запросы</h4>
-                    <table class="table table-striped table-hover" id="ordersTable">
-                        <thead class="table-primary">
-                            <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">Название курса</th>
-                                <th scope="col">Дата занятия</th>
-                                <th scope="col">Стоимость</th>
-                                <th scope="col">Действия</th>
-                            </tr>
-                        </thead>
-                        <tbody></tbody>
-                    </table>
-                    <div id="ordersPagination"></div>
-                </div>
+                <section id="offers_courses_my">
+                    <div class="table-responsive py-5" id="mycourses">
+                        <h4 class="mb-3">Ваши запросы</h4>
+                        <table class="table table-striped table-hover" id="ordersTable">
+                            <thead class="table-primary">
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Дата занятия</th>
+                                    <th scope="col">Время начала</th>
+                                    <th scope="col">Длительность</th>
+                                    <th scope="col">Стоимость</th>
+                                    <th scope="col">Действия</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                        <div id="ordersPagination"></div>
+                    </div>
 
-                <div class="empty_requests" id="emptyRequests">
-                    <h4>К сожалению, у вас нет заявок☹️</h4>
-                </div>
+                    <div class="empty_requests" id="emptyrequests">
+                        <h4>К сожалению, у вас пока нет заявок☹️</h4>
+                    </div>
+                </section>
+
             </div>
         </section>
     </main>
-
-    <!-- Modal для view (подробнее) -->
-    <div class="modal fade" id="viewModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Подробнее о заявке</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body" id="viewBody">
-                    <!-- JS заполнит info -->
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal для edit (редактировать, похож на applyModal) -->
-    <div class="modal fade" id="editModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Редактирование заявки</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="editForm">
-                        <!-- Такие же поля, как в applyModal, JS заполнит -->
-                        <div class="mb-3">
-                            <label for="editCourseName" class="form-label">Название курса / Репетитор</label>
-                            <input type="text" class="form-control" id="editCourseName" readonly>
-                        </div>
-                        <div class="mb-3">
-                            <label for="editTutorName" class="form-label">Преподаватель</label>
-                            <input type="text" class="form-control" id="editTutorName" readonly>
-                        </div>
-                        <div class="mb-3">
-                            <label for="editStartDate" class="form-label">Дата начала</label>
-                            <input type="date" class="form-control" id="editStartDate">
-                        </div>
-                        <div class="mb-3">
-                            <label for="editTimeSlot" class="form-control-label">Время занятия</label>
-                            <input type="time" class="form-control" id="editTimeSlot">
-                        </div>
-                        <div class="mb-3">
-                            <label for="editDuration" class="form-label">Продолжительность (часы)</label>
-                            <input type="text" class="form-control" id="editDuration" readonly>
-                        </div>
-                        <div class="mb-3">
-                            <label for="editStudentsNum" class="form-label">Кол-во студентов (1-20)</label>
-                            <input type="number" class="form-control" id="editStudentsNum" min="1" max="20">
-                        </div>
-                        <div class="mb-3">
-                            <h6>Доп. опции</h6>
-                            <div class="form-check">
-                                <input type="checkbox" class="form-check-input" id="editSupplementary">
-                                <label class="form-check-label" for="editSupplementary">Доп. материалы</label>
-                            </div>
-                            <!-- Остальные чекбоксы как в apply -->
-                            <!-- ... (скопируй из applyModal) -->
-                        </div>
-                        <div class="mb-3">
-                            <label for="editTotalCost" class="form-label">Общая стоимость (руб)</label>
-                            <input type="text" class="form-control" id="editTotalCost" readonly>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
-                    <button type="button" class="btn btn-primary" id="submitEdit">Сохранить</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal для confirm delete -->
-    <div class="modal fade" id="deleteModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Подтверждение удаления</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <p>Вы уверены, что хотите удалить заявку?</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Нет</button>
-                    <button type="button" class="btn btn-danger" id="confirmDelete">Да</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <!-- подвал -->
     <footer class="bg-black text-white py-4 text-center" id="footer">
         <p>Разработчик: <a href="https://github.com/tpAnswer4yourself">tpAnswer4yourself</a></p>

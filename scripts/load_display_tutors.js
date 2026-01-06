@@ -12,19 +12,29 @@ document.addEventListener('DOMContentLoaded', () => {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
             tutors_data = await response.json();
-            console.log('Попытка не птыка')
-            DisplayTutors(1);
+            check();
         }
         catch (error) {
             console.error('Error fetching tutors data:', error);
         }
     };
 
+    function check() {
+        const Tutors = document.getElementById('dostupnie_tutors');
+        const EmptyRequests = document.getElementById('empty_tutors');
 
-    function paginate(data, page) {
-        const start = (page - 1) * per_page;
-        return data.slice(start, start + per_page);
-    };
+        if (tutors_data.length === 0) {
+            console.log('Данных нет, пустой контейнер (тьюторы)');
+            Tutors.style.display = 'none';
+            EmptyRequests.style.display = 'block';
+        }
+        else {
+            console.log('Данные репетиторов есть, отображаем таблицу тьюторов');
+            Tutors.style.display = 'block';
+            EmptyRequests.style.display = 'none';
+            DisplayTutors(1);
+        };
+    }
 
     function DisplayTutors(page = 1) {
         const tbody = document.querySelector('#tutorsTable tbody');
