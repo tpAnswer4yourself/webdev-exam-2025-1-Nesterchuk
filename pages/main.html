@@ -49,6 +49,7 @@
 
     <main class="flex-grow-1">
         <div class="container">
+            <!---БАННЕР - CTA --->
             <div class="px-4 py-5 my-5 text-center rounded-5"
                 style="background-image: url('../media/123.jpg'); background-size: cover; background-position: center; z-index: -1;">
                 <h1 class="display-5 fw-bold banner-langworld text-white">LangWorld</h1>
@@ -135,20 +136,40 @@
 
                 <!---ПОИСК КУРСА-->
                 <section class="search_courses mb-5">
-                    <div class="block_courses">
-                        <h3 class="fw-bold">Поиск курсов</h3>
-                        <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
-                            <input type="search" class="form-control mb-3" id="courseSearchInput"
-                                placeholder="По названию..." aria-label="Search">
-                            <select class="form-select mb-3" id="courseLevelFilter">
-                                <option value="">Все уровни</option>
-                                <option value="Beginner">Начальный</option>
-                                <option value="Intermediate">Средний</option>
-                                <option value="Advanced">Продвинутый</option>
-                            </select>
-                        </form>
-                        <button class="btn btn-primary rounded-pill px-3" type="button"
-                            id="searchCoursesBtn">Найти</button>
+                    <h3 class="fw-bold mb-4">Найти курс</h3>
+                    <div class="container">
+                        <div class="row justify-content-center">
+                            <div class="col-12 col-lg-10 col-xl-8">
+                                <form class="row g-2 align-items-end" role="search">
+                                    <!-- Поле поиска -->
+                                    <div class="col-12 col-md-6 col-lg-6">
+                                        <label for="courseSearchInput" class="form-label visually-hidden">Поиск по
+                                            названию</label>
+                                        <input type="search" class="form-control" id="courseSearchInput"
+                                            placeholder="По названию..." aria-label="Search">
+                                    </div>
+
+                                    <!-- Выпадающий список -->
+                                    <div class="col-12 col-md-6 col-lg-6">
+                                        <label for="courseLevelFilter" class="form-label visually-hidden">Уровень
+                                            курса</label>
+                                        <select class="form-select" id="courseLevelFilter">
+                                            <option value="">Все уровни</option>
+                                            <option value="Beginner">Начальный</option>
+                                            <option value="Intermediate">Средний</option>
+                                            <option value="Advanced">Продвинутый</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="col-12 text-center mt-3">
+                                        <button class="btn btn-primary w-75 rounded-5" type="button"
+                                            id="searchCoursesBtn">
+                                            Найти курсы<i class="bi bi-search ms-1"></i>
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
                     </div>
                 </section>
 
@@ -177,29 +198,58 @@
 
                 <!---ПОИСК РЕПЕТИТОРА--->
                 <section class="search_courses mb-5">
-                    <div class="block_courses">
-                        <h3 class="fw-bold">Найти репетитора</h3>
-                        <form class="p-2 mb-2">
-                            <select class="form-select mb-3" id="tutorLanguageFilter">
-                                <option value="">Все языки</option>
-                                <option value="Russian">Русский</option>
-                                <option value="English">Английский</option>
-                                <option value="Spanish">Испанский</option>
-                                <!-- Добавь больше по API -->
-                            </select>
-                            <input type="number" class="form-control mb-3" id="tutorExperienceFilter"
-                                placeholder="Мин. опыт (лет)" min="0">
-                            <button class="btn btn-primary rounded-pill px-3" type="button"
-                                id="searchTutorsBtn">Найти</button>
-                        </form>
+                    <h3 class="fw-bold mb-4">Найти репетитора</h3>
+                    <div class="container">
+                        <div class="row justify-content-center">
+                            <div class="col-12 col-lg-10 col-xl-8">
+                                <form class="row g-3 align-items-end" role="search">
+                                    <!-- Язык -->
+                                    <div class="col-12 col-md-6">
+                                        <label for="tutorLanguageFilter" class="form-label visually-hidden">Язык
+                                            преподавания</label>
+                                        <select class="form-select" id="tutorLanguageFilter">
+                                            <option value="">Все языки</option>
+                                            <option value="Russian">Русский</option>
+                                            <option value="English">Английский</option>
+                                            <option value="Spanish">Испанский</option>
+                                        </select>
+                                    </div>
+
+                                    <!-- Опыт -->
+                                    <div class="col-12 col-md-6">
+                                        <label for="tutorExperienceFilter"
+                                            class="form-label visually-hidden">Минимальный опыт</label>
+                                        <input type="number" class="form-control" id="tutorExperienceFilter"
+                                            placeholder="Мин. опыт (лет)" min="0" step="1" max="30">
+                                    </div>
+
+                                    <!-- Кнопка -->
+                                    <div class="col-12 text-center mt-3">
+                                        <button class="btn btn-primary w-75 rounded-pill py-2" type="button"
+                                            id="searchTutorsBtn">
+                                            Найти репетитора<i class="bi bi-search ms-1"></i>
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
                     </div>
                 </section>
-            </section>
+
+
+                <!---ЯНДЕКС КАРТЫ-->
+                <section class="map mb-5">
+                    <h3 class="fw-bold mb-4">Наше расположение</h3>
+                    <div style="width: 100%; height: 400px;">
+                        <iframe src="https://yandex.ru/map-widget/v1/?um=constructor%3Aexample&source=constructor"
+                            width="100%" height="100%" frameborder="0"></iframe>
+                    </div>
+                </section>
         </div>
     </main>
 
     <!--- подвал -->
-    <footer class="bg-black text-white py-4 text-center mb-auto" id="footer">
+    <footer class="bg-black text-white py-4 text-center mb-auto mt-5" id="footer">
         <p>Разработчик: <a href="https://github.com/tpAnswer4yourself">tpAnswer4yourself</a></p>
         <p>Moscow - 2025</p>
     </footer>

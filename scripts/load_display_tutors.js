@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const API_URL_TUTORS = `http://exam-api-courses.std-900.ist.mospolytech.ru/api/tutors?api_key=${API_KEY}`; //get_tutors
 
     let tutors_data = [];
-    const per_page = 3;
+    const per_page = 5;
 
     async function loaded_tutors() {
         try {

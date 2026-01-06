@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', () =>{
     const API_URL_COURSES = `http://exam-api-courses.std-900.ist.mospolytech.ru/api/courses?api_key=${API_KEY}`; //get_courses
     
     let courses_data = [];
-    const per_page = 3;
+    const per_page = 5;
 
     async function loaded_courses() {
         try {
