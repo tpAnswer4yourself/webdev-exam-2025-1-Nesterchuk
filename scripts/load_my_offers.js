@@ -2,10 +2,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const API_KEY = '93f2f89f-4f0d-4dda-ba66-ae4884769bb4';
     const API_URL_ORDERS = `http://exam-api-courses.std-900.ist.mospolytech.ru/api/orders?api_key=${API_KEY}`; //get_offers'
 
-    let orders_data = [];
+    window.orders_data = [];
     const per_page = 5;
 
-    async function load_orders() {
+
+    window.load_orders = async function() {
         try {
             const response = await fetch(API_URL_ORDERS);
             if(!response.ok) {
@@ -15,11 +16,14 @@ document.addEventListener("DOMContentLoaded", () => {
             console.log('Orders data loaded');
             checkOrders();
 
+            attachOrderTableListeners();
+
         }
         catch (error) {
             console.error('Error fetching orders data:', error);
         }
     };
+    
 
     function checkOrders() {
         const MyCourses = document.getElementById('mycourses');
@@ -51,15 +55,13 @@ document.addEventListener("DOMContentLoaded", () => {
                 <td>${element.duration} недель</td>
                 <td>${element.price} рублей</td>
                 <td>
-                    <button class="btn btn-success btn-sm apply-btn" data-id="${element.id}">Смотреть</button>
-                    <button class="btn btn-success btn-sm apply-btn" data-id="${element.id}">Редактировать</button>
-                    <button class="btn btn-success btn-sm apply-btn" data-id="${element.id}">Удалить</button>
+                    <button class="btn btn-success btn-sm apply-btn" data-id="${element.id}" title="Смотреть"><i class="bi bi-eye fs-5"></i></button>
+                    <button class="btn btn-primary btn-sm apply-btn" data-id="${element.id}" title="Редактировать"><i class="bi bi-pencil fs-5"></i></button>
+                    <button class="btn btn-danger btn-sm apply-btn" data-id="${element.id}" title="Удалить"><i class="bi bi-trash3 fs-5"></i></button>
                 </td>
             `;
             tbody.appendChild(tr);
         });
-
-        //document.querySelectorAll
 
         render_pagination(Math.ceil(orders_data.length / per_page), page);
     }
@@ -88,5 +90,30 @@ document.addEventListener("DOMContentLoaded", () => {
         paginationDiv.appendChild(ul);
     };
 
+
+    //слушаем блок с кнопками в таблице - делегирование событий
+    function attachOrderTableListeners() {
+        const ordersTable = document.getElementById('ordersTable');
+        if (!ordersTable) return; // Если таблицы нет — выходим
+
+        ordersTable.addEventListener('click', function(e) {
+            const target = e.target;
+
+            if (target.closest('.bi-eye')) {
+                selectedOrderId = target.closest('button').dataset.id;
+                openViewOrderModal();
+            } else if (target.closest('.bi-pencil')) {
+                selectedOrderId = target.closest('button').dataset.id;
+                openEditOrderModal();
+            } else if (target.closest('.bi-trash3')) {
+                selectedOrderId = target.closest('button').dataset.id;
+                openDeleteConfirmModal();
+            }
+        });
+    }
+
+
     load_orders();
+
+    
 });

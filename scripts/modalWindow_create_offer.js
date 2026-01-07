@@ -28,7 +28,7 @@ function openCourseApplyModal(courseId) {
         <div class="custom-modal-body">
             <form id="courseApplyForm">
                 <!-- Название и преподаватель -->
-                <div class="row mb-4">
+                <div class="row mb-2">
                     <div class="col-md-6">
                         <label class="form-label fw-semibold">Название курса</label>
                         <input type="text" class="form-control" value="${selectedCourseForApply.name}" readonly>
@@ -40,7 +40,7 @@ function openCourseApplyModal(courseId) {
                 </div>
 
                 <!-- Дата и время — 2 колонки -->
-                <div class="row mb-4">
+                <div class="row mb-2">
                     <div class="col-md-6">
                         <label class="form-label fw-semibold">Дата начала</label>
                         <select class="form-select" id="startDateSelect" required>
@@ -56,19 +56,19 @@ function openCourseApplyModal(courseId) {
                 </div>
 
                 <!-- Продолжительность -->
-                <div class="mb-4">
+                <div class="mb-2">
                     <label class="form-label fw-semibold">Продолжительность</label>
                     <input type="text" class="form-control" id="durationInfo" readonly>
                 </div>
 
                 <!-- Студенты -->
-                <div class="mb-4">
+                <div class="mb-2">
                     <label class="form-label fw-semibold">Количество студентов (1–20)</label>
                     <input type="number" class="form-control" id="studentsCount" min="1" max="20" value="1" required>
                 </div>
 
                 <!-- Доп. параметры -->
-                <div class="mb-4">
+                <div class="mb-2">
                     <h6 class="fw-semibold">Дополнительные параметры</h6>
                     <div class="row g-3">
                         <div class="col-md-6">
@@ -105,7 +105,7 @@ function openCourseApplyModal(courseId) {
                 </div>
 
                 <!-- Стоимость -->
-                <div class="mb-4">
+                <div class="mb-3">
                     <label class="form-label fw-bold fs-5">Общая стоимость</label>
                     <input type="text" class="form-control fw-bold fs-4 text-success" id="totalCost" readonly value="0 руб">
                 </div>
@@ -250,7 +250,10 @@ async function submitCourseApply() {
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(data)
         });
-        if (!res.ok) throw new Error('Ошибка');
+        if (!res.ok) {
+            alert("❌❌❌Ошибка! Студентов должно быть не более 20!❌❌❌");
+            throw new Error('Ошибка');
+        };
         console.log('Заявка отправлена!');
         closeCourseModal();
         alert("✔️✔️✔️ Заявка успешно отправлена ✔️✔️✔️");
