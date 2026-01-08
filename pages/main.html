@@ -16,6 +16,8 @@
     <script src="../scripts/paginate.js"></script>
     <script src="../scripts/displayTutorsAndCourses.js"></script>
     <script src="../scripts/modalWindow_create_offer.js"></script>
+    <script src="https://api-maps.yandex.ru/2.1/?apikey=9d570f06-1345-41f2-92b8-471cf61cc88f&lang=ru_RU" type="text/javascript"></script>
+    <script src="../scripts/resources_map.js"></script>
 </head>
 
 <body class="d-flex flex-column min-vh-100">
@@ -175,7 +177,8 @@
                                     </div>
                                 </form>
                             </div>
-                            <div class="result_search_courses mt-5 mb-5" id="searchCoursesResults" style="display: none;">
+                            <div class="result_search_courses mt-5 mb-5" id="searchCoursesResults"
+                                style="display: none;">
                                 <h4 class="mb-3">Результаты поиска курсов</h4>
                                 <div class="table-responsive" id="coursesTableContainer">
                                     <table class="table table-striped table-hover" id="searchCoursesTable">
@@ -194,7 +197,8 @@
                                 </div>
                                 <div class="empty_courses py-5 text-center" id="emptyCourses" style="display: none;">
                                     <h4 class="text-muted">В результате поиска ничего не найдено ☹️</h4>
-                                    <p class="text-secondary">Попробуйте изменить фильтры или выбрать другие параметры</p>
+                                    <p class="text-secondary">Попробуйте изменить фильтры или выбрать другие параметры
+                                    </p>
                                 </div>
                             </div>
                         </div>
@@ -287,7 +291,8 @@
                                 </div>
                                 <div class="empty_tutors py-5 text-center" id="emptyTutors" style="display: none;">
                                     <h4 class="text-muted">В результате поиска ничего не найдено ☹️</h4>
-                                    <p class="text-secondary">Попробуйте изменить фильтры или выбрать другие параметры</p>
+                                    <p class="text-secondary">Попробуйте изменить фильтры или выбрать другие параметры
+                                    </p>
                                 </div>
                             </div>
                         </div>
@@ -295,13 +300,28 @@
                 </section>
 
 
-                <!---ЯНДЕКС КАРТЫ-->
+                <!---ЯНДЕКС КАРТЫ доп-задание-->
                 <section class="map mb-5" id="map_section">
-                    <h3 class="fw-bold mb-4">Наше расположение</h3>
-                    <div style="width: 100%; height: 500px;">
-                        <iframe src="https://yandex.ru/map-widget/v1/?um=constructor%3Aexample&source=constructor"
-                            width="100%" height="100%" frameborder="0"></iframe>
+                    <h3 class="fw-bold mb-4">Интерактивная карта учебных ресурсов</h3>
+                    <div class="mb-3">
+                        <label for="resourceFilter" class="form-label">Выберите тип ресурса:</label>
+                        <select id="resourceFilter" class="form-select">
+                            <option value="">Выберите фильтр</option>
+                            <option value="Языковой клуб">Языковой клуб</option>
+                            <option value="Курсы иностранного языка">Курсы иностранного языка</option>
+                            <option value="Библиотеки с ресурсами на иностранных языках">Библиотеки с ресурсами на
+                                иностранных языках</option>
+                            <option value="Культурные центры">Культурные центры</option>
+                            <option value="Кафе языкового обмена">Кафе языкового обмена</option>
+                            <option value="Образовательные учреждения иностранные языки">Образовательные учреждения
+                            </option>
+                            <option value="Общественные центры иностранные языки">Общественные центры</option>
+                            <option value="Публичные библиотеки иностранные языки">Публичные библиотеки</option>
+                            <option value="Частные языковые курсы">Частные языковые курсы</option>
+                            <option value="Языковые кафе или клубы">Языковые кафе или клубы</option>
+                        </select>
                     </div>
+                    <div id="map" style="width: 100%; height: 700px;"></div>
                 </section>
             </section>
         </div>
