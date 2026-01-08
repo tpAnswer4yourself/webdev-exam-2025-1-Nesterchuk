@@ -213,7 +213,6 @@ async function openEditOrderModal() {
         `;
         overlay.classList.add('active');
 
-        // Заполнение дат
         const dateSelect = document.getElementById('editStartDateSelect');
         const uniqueDates = [...new Set(editingCourseData.start_dates.map(d => d.split('T')[0]))];
         uniqueDates.forEach(date => {
@@ -223,7 +222,6 @@ async function openEditOrderModal() {
             dateSelect.appendChild(option);
         });
 
-        // Предустановка значений
         dateSelect.value = order.date_start;
         updateEditTimeSlots();
         document.getElementById('editTimeSelect').value = order.time_start;
@@ -237,15 +235,12 @@ async function openEditOrderModal() {
 
         document.getElementById('saveEditBtn').addEventListener('click', submitEditCourseApply);
 
-        // показываем
         overlay.classList.add('active');
 
-        // Закрытие по overlay
         overlay.addEventListener('click', e => {
             if (e.target === overlay) closeOverlay('editOrderModalOverlay');
         });
 
-        // Начальный расчет
         calculateEditCourseCost();
     } catch (e) {
         showNotification('Ошибка: ' + e.message, 'danger');
@@ -326,10 +321,8 @@ function calculateEditCourseCost() {
     startDate.setHours(0, 0, 0, 0);
     today.setHours(0, 0, 0, 0);
     
-    // Расчет разницы в месяцах
     const monthsDiff = (startDate.getFullYear() - today.getFullYear()) * 12 +  (startDate.getMonth() - today.getMonth());
     
-    // Если разница больше 1 месяца (больше чем за месяц)
     if (monthsDiff > 1 || (monthsDiff === 1 && startDate.getDate() >= today.getDate())) {
         base *= 0.9; // Скидка 10%
         earlyReg = true;
@@ -423,7 +416,6 @@ function showNotification(message, type = 'success') {
     `;
     alertsBlock.appendChild(alertDiv);
 
-    // Авто-исчезновение через 5 секунд
     setTimeout(() => {
         alertDiv.classList.remove('show');
         setTimeout(() => alertDiv.remove(), 300);
