@@ -55,9 +55,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 <td>${element.duration} недель</td>
                 <td>${element.price} рублей</td>
                 <td>
-                    <button class="btn btn-success btn-sm apply-btn" data-id="${element.id}" title="Смотреть"><i class="bi bi-eye fs-5"></i></button>
-                    <button class="btn btn-primary btn-sm apply-btn" data-id="${element.id}" title="Редактировать"><i class="bi bi-pencil fs-5"></i></button>
-                    <button class="btn btn-danger btn-sm apply-btn" data-id="${element.id}" title="Удалить"><i class="bi bi-trash3 fs-5"></i></button>
+                    <button class="btn btn-success btn-sm apply-btn btn_view" data-id="${element.id}" title="Смотреть"><i class="bi bi-eye fs-5"></i></button>
+                    <button class="btn btn-primary btn-sm apply-btn btn_edit" data-id="${element.id}" title="Редактировать"><i class="bi bi-pencil fs-5"></i></button>
+                    <button class="btn btn-danger btn-sm apply-btn btn_del" data-id="${element.id}" title="Удалить"><i class="bi bi-trash3 fs-5"></i></button>
                 </td>
             `;
             tbody.appendChild(tr);
@@ -99,13 +99,13 @@ document.addEventListener("DOMContentLoaded", () => {
         ordersTable.addEventListener('click', function(e) {
             const target = e.target;
 
-            if (target.closest('.bi-eye')) {
+            if (target.closest('.btn_view')) {
                 selectedOrderId = target.closest('button').dataset.id;
                 openViewOrderModal();
-            } else if (target.closest('.bi-pencil')) {
+            } else if (target.closest('.btn_edit')) {
                 selectedOrderId = target.closest('button').dataset.id;
                 openEditOrderModal();
-            } else if (target.closest('.bi-trash3')) {
+            } else if (target.closest('.btn_del')) {
                 selectedOrderId = target.closest('button').dataset.id;
                 openDeleteConfirmModal();
             }

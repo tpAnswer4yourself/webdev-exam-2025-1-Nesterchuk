@@ -69,7 +69,7 @@ function openCourseApplyModal(courseId) {
 
                 <!-- Доп. параметры -->
                 <div class="mb-2">
-                    <h6 class="fw-semibold">Дополнительные параметры</h6>
+                    <h6 class="fw-semibold">Дополнительные услуги (опционально)</h6>
                     <div class="row g-3">
                         <div class="col-md-6">
                             <div class="form-check">
@@ -99,6 +99,12 @@ function openCourseApplyModal(courseId) {
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" id="interactive">
                                 <label class="form-check-label">Интерактивная платформа (+50%)</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="intensiveCourse">
+                                <label class="form-check-label">Интенсивные курсы (+20%)</label>
                             </div>
                         </div>
                     </div>
@@ -190,6 +196,9 @@ function addHours(time, hours) {
     return `${(h + hours).toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}`;
 }
 
+let groupEnrollment = false; //групповая заявка (флаг для студентов)
+let earlyReg = false; //рання регистрация (больше чем за месяц)
+
 // Расчёт стоимости
 function calculateCourseCost() {
     const students = parseInt(document.getElementById('studentsCount').value) || 1;
@@ -216,12 +225,36 @@ function calculateCourseCost() {
     if (document.getElementById('excursions').checked) base *= 1.25;
     if (document.getElementById('assessment').checked) base += 300;
     if (document.getElementById('interactive').checked) base *= 1.5;
+    if (document.getElementById('intensiveCourse').checked) base *= 1.2;
 
-    // Авто-скидки
-    const start = new Date(document.getElementById('startDateSelect').value);
+
+    //АВТОМАТИЧЕСКИЕ СКИДКИ
+    const startDate = new Date(document.getElementById('startDateSelect').value);
     const today = new Date();
-    if (start > new Date(today.setMonth(today.getMonth() + 1))) base *= 0.9;
-    if (students >= 5) base *= 0.85;
+    
+    // Сброс времени для точного сравнения дат
+    startDate.setHours(0, 0, 0, 0);
+    today.setHours(0, 0, 0, 0);
+    
+    // Расчет разницы в месяцах
+    const monthsDiff = (startDate.getFullYear() - today.getFullYear()) * 12 +  (startDate.getMonth() - today.getMonth());
+    
+    // Если разница больше 1 месяца (больше чем за месяц)
+    if (monthsDiff > 1 || (monthsDiff === 1 && startDate.getDate() >= today.getDate())) {
+        base *= 0.9; // Скидка 10%
+        earlyReg = true;
+    } else {
+        earlyReg = false;
+    }
+    
+    // Групповая скидка
+    if (students >= 5) {
+        base *= 0.85;
+        groupEnrollment = true;
+    } else {
+        groupEnrollment = false;
+    };
+    
     if (selectedCourseForApply.week_length >= 5) base *= 1.2;
 
     document.getElementById('totalCost').value = Math.round(base) + ' руб';
@@ -229,6 +262,7 @@ function calculateCourseCost() {
 
 // Отправка
 async function submitCourseApply() {
+    calculateCourseCost();
     const data = {
         course_id: selectedCourseForApply.id,
         tutor_id: 0,
@@ -241,7 +275,10 @@ async function submitCourseApply() {
         personalized: document.getElementById('personalized').checked,
         excursions: document.getElementById('excursions').checked,
         assessment: document.getElementById('assessment').checked,
-        interactive: document.getElementById('interactive').checked
+        interactive: document.getElementById('interactive').checked,
+        intensive_course: document.getElementById('intensiveCourse').checked,
+        group_enrollment: groupEnrollment,
+        early_registration: earlyReg
     };
 
     try {
