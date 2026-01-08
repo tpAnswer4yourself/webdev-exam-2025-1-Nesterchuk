@@ -141,11 +141,8 @@ function openCourseApplyModal(courseId) {
     });
 
     document.getElementById('submitCourseApply').addEventListener('click', submitCourseApply);
-
-    // Показываем
     overlay.classList.add('active');
 
-    // Закрытие по overlay
     overlay.addEventListener('click', e => {
         if (e.target === overlay) closeCourseModal();
     });
@@ -207,16 +204,12 @@ function calculateCourseCost() {
 
     let base = selectedCourseForApply.course_fee_per_hour * selectedCourseForApply.total_length * selectedCourseForApply.week_length;
 
-    // Weekend
     const day = new Date(document.getElementById('startDateSelect').value).getDay();
     if (day === 0 || day === 6) base *= 1.5;
-
-    // Morning/evening
     const hour = parseInt(time.split(':')[0]);
     base += ((hour >= 9 && hour < 12) ? 400 : 0) * students;
     base += ((hour >= 18 && hour < 20) ? 1000 : 0) * students;
 
-    // * students
     base *= students;
 
     // Опции
@@ -231,15 +224,11 @@ function calculateCourseCost() {
     //АВТОМАТИЧЕСКИЕ СКИДКИ
     const startDate = new Date(document.getElementById('startDateSelect').value);
     const today = new Date();
-    
-    // Сброс времени для точного сравнения дат
     startDate.setHours(0, 0, 0, 0);
     today.setHours(0, 0, 0, 0);
     
-    // Расчет разницы в месяцах
     const monthsDiff = (startDate.getFullYear() - today.getFullYear()) * 12 +  (startDate.getMonth() - today.getMonth());
-    
-    // Если разница больше 1 месяца (больше чем за месяц)
+
     if (monthsDiff > 1 || (monthsDiff === 1 && startDate.getDate() >= today.getDate())) {
         base *= 0.9; // Скидка 10%
         earlyReg = true;
@@ -260,7 +249,6 @@ function calculateCourseCost() {
     document.getElementById('totalCost').value = Math.round(base) + ' руб';
 }
 
-// Отправка
 async function submitCourseApply() {
     calculateCourseCost();
     const data = {
