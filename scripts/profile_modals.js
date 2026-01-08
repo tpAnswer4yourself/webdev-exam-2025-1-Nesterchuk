@@ -88,145 +88,309 @@ function openViewOrderModal() {
 
 // 3. Редактирование (GET + PUT) //
 
-function openEditOrderModal() {
+let editingCourseData = null;
+
+async function openEditOrderModal() {
     console.log("Редактирование заявки");
-    fetch(`${API_BASE}/orders/${selectedOrderId}?api_key=${API_KEY}`)
-        .then(res => {
-            if (!res.ok) throw new Error('Ошибка получения');
-            return res.json();
-        })
-        .then(order => {
-            const overlay = createOverlay('editOrderModalOverlay');
-            overlay.innerHTML = `
-                <div class="custom-modal">
-                    <div class="custom-modal-header">
-                        <h5 class="custom-modal-title">Редактирование заявки #${order.id}</h5>
-                        <button class="custom-modal-close" onclick="closeOverlay('editOrderModalOverlay')">×</button>
-                    </div>
-                    <div class="custom-modal-body">
-                        <form id="editOrderForm">
-                            <div class="row mb-3">
-                                <div class="col-md-6">
-                                    <label class="form-label fw-semibold">Дата начала</label>
-                                    <input type="date" class="form-control" id="editStartDate" value="${order.date_start}" required>
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="form-label fw-semibold">Время начала</label>
-                                    <input type="time" class="form-control" id="editTimeStart" value="${order.time_start}" required>
-                                </div>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label fw-semibold">Продолжительность (ч)</label>
-                                <input type="number" class="form-control" id="editDuration" value="${order.duration}" min="1" max="40" required>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label fw-semibold">Количество студентов (1–20)</label>
-                                <input type="number" class="form-control" id="editPersons" value="${order.persons}" min="1" max="20" required>
-                            </div>
-                            <div class="mb-3">
-                                <h6 class="fw-semibold">Дополнительные услуги</h6>
-                                <div class="row g-3">
-                                    <div class="col-md-6">
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" id="editSupplementary" ${order.supplementary ? 'checked' : ''}>
-                                            <label class="form-check-label">Доп. материалы (+2000 ₽/студент)</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" id="editPersonalized" ${order.personalized ? 'checked' : ''}>
-                                            <label class="form-check-label">Индивидуальные занятия (+1500 ₽/неделя)</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" id="editExcursions" ${order.excursions ? 'checked' : ''}>
-                                            <label class="form-check-label">Культурные экскурсии (+25%)</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" id="editAssessment" ${order.assessment ? 'checked' : ''}>
-                                            <label class="form-check-label">Оценка уровня (+300 ₽)</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" id="editInteractive" ${order.interactive ? 'checked' : ''}>
-                                            <label class="form-check-label">Интерактивная платформа (+50%)</label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label fw-bold fs-5">Общая стоимость</label>
-                                <input type="text" class="form-control fw-bold fs-4 text-success" id="editTotalCost" readonly value="${order.price} руб">
-                            </div>
-                        </form>
-                    </div>
-                    <div class="custom-modal-footer">
-                        <button type="button" class="btn btn-secondary" onclick="closeOverlay('editOrderModalOverlay')">Отмена</button>
-                        <button type="button" class="btn btn-primary" id="saveEditBtn">Сохранить</button>
-                    </div>
+    try {
+        const orderRes = await fetch(`${API_BASE}/orders/${selectedOrderId}?api_key=${API_KEY}`);
+        if (!orderRes.ok) throw new Error('Ошибка получения заявки');
+        const order = await orderRes.json();
+
+        if (!order.course_id) {
+            showNotification('Редактирование доступно только для курсов', 'warning');
+            return;
+        }
+
+        const courseRes = await fetch(`${API_BASE}/courses/${order.course_id}?api_key=${API_KEY}`);
+        if (!courseRes.ok) throw new Error('Ошибка получения курса');
+        editingCourseData = await courseRes.json();
+
+        const overlay = createOverlay('editOrderModalOverlay');
+        overlay.innerHTML = `
+            <div class="custom-modal">
+                <div class="custom-modal-header">
+                    <h5 class="custom-modal-title">Редактирование заявки на курс #${order.id}</h5>
+                    <button class="custom-modal-close" onclick="closeOverlay('editOrderModalOverlay')">×</button>
                 </div>
-            `;
-            overlay.classList.add('active');
+                <div class="custom-modal-body">
+                    <form id="editOrderForm">
+                        <!-- Название и преподаватель -->
+                        <div class="row mb-2">
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Название курса</label>
+                                <input type="text" class="form-control" value="${editingCourseData.name}" readonly>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Преподаватель</label>
+                                <input type="text" class="form-control" value="${editingCourseData.teacher}" readonly>
+                            </div>
+                        </div>
 
-            // Live-расчёт стоимости (как в создании)
-            const calcCost = () => {
-                const students = parseInt(document.getElementById('editPersons').value) || 1;
-                const time = document.getElementById('editTimeStart').value;
-                if (!time) return document.getElementById('editTotalCost').value = '0 руб';
+                        <!-- Дата и время -->
+                        <div class="row mb-2">
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Дата начала</label>
+                                <select class="form-select" id="editStartDateSelect" required>
+                                    <option value="">Выберите дату</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Время занятия</label>
+                                <select class="form-select" id="editTimeSelect" disabled required>
+                                    <option value="">Сначала выберите дату</option>
+                                </select>
+                            </div>
+                        </div>
 
-                let base = 500 * 10; // Замени на реальные данные из order (fee_per_hour, duration и т.д.)
-                // Здесь нужно знать fee_per_hour и duration из order — если их нет, сделаем GET-запрос на курс/репетитора
-                // Пока заглушка — 500 руб/ч * 10 ч
-                // Weekend/morning/evening — как в создании
+                        <!-- Продолжительность -->
+                        <div class="mb-2">
+                            <label class="form-label fw-semibold">Продолжительность</label>
+                            <input type="text" class="form-control" id="editDurationInfo" readonly>
+                        </div>
 
-                // Опции
-                if (document.getElementById('editSupplementary').checked) base += 2000 * students;
-                // Добавь остальные
+                        <!-- Студенты -->
+                        <div class="mb-2">
+                            <label class="form-label fw-semibold">Количество студентов (1–20)</label>
+                            <input type="number" class="form-control" id="editStudentsCount" min="1" max="20" value="${order.persons}" required>
+                        </div>
 
-                document.getElementById('editTotalCost').value = Math.round(base) + ' руб';
-            };
+                        <!-- Доп. параметры -->
+                        <div class="mb-2">
+                            <h6 class="fw-semibold">Дополнительные услуги (опционально)</h6>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="editSupplementary" ${order.supplementary ? 'checked' : ''}>
+                                        <label class="form-check-label">Доп. материалы (+2000 ₽/студент)</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="editPersonalized" ${order.personalized ? 'checked' : ''}>
+                                        <label class="form-check-label">Индивидуальные занятия (+1500 ₽/неделя)</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="editExcursions" ${order.excursions ? 'checked' : ''}>
+                                        <label class="form-check-label">Культурные экскурсии (+25%)</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="editAssessment" ${order.assessment ? 'checked' : ''}>
+                                        <label class="form-check-label">Оценка уровня (+300 ₽)</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="editInteractive" ${order.interactive ? 'checked' : ''}>
+                                        <label class="form-check-label">Интерактивная платформа (+50%)</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="editIntensiveCourse" ${order.intensive_course ? 'checked' : ''}>
+                                        <label class="form-check-label">Интенсивные курсы (+20%)</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
-            document.getElementById('editPersons').addEventListener('input', calcCost);
-            // Добавь слушатели на чекбоксы
-            document.querySelectorAll('#editOrderForm .form-check-input').forEach(chk => chk.addEventListener('change', calcCost));
+                        <!-- Стоимость -->
+                        <div class="mb-3">
+                            <label class="form-label fw-bold fs-5">Общая стоимость</label>
+                            <input type="text" class="form-control fw-bold fs-4 text-success" id="editTotalCost" readonly value="${order.price} руб">
+                        </div>
+                    </form>
+                </div>
+                <div class="custom-modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closeOverlay('editOrderModalOverlay')">Отмена</button>
+                    <button type="button" class="btn btn-primary" id="saveEditBtn">Сохранить</button>
+                </div>
+            </div>
+        `;
+        overlay.classList.add('active');
 
-            document.getElementById('saveEditBtn').onclick = async () => {
-                const data = {
-                    date_start: document.getElementById('editStartDate').value,
-                    time_start: document.getElementById('editTimeStart').value,
-                    duration: parseInt(document.getElementById('editDuration').value),
-                    persons: parseInt(document.getElementById('editPersons').value),
-                    supplementary: document.getElementById('editSupplementary').checked,
-                    personalized: document.getElementById('editPersonalized').checked,
-                    excursions: document.getElementById('editExcursions').checked,
-                    assessment: document.getElementById('editAssessment').checked,
-                    interactive: document.getElementById('editInteractive').checked,
+        // Заполнение дат
+        const dateSelect = document.getElementById('editStartDateSelect');
+        const uniqueDates = [...new Set(editingCourseData.start_dates.map(d => d.split('T')[0]))];
+        uniqueDates.forEach(date => {
+            const option = document.createElement('option');
+            option.value = date;
+            option.textContent = new Date(date).toLocaleDateString('ru-RU');
+            dateSelect.appendChild(option);
+        });
 
-                };
+        // Предустановка значений
+        dateSelect.value = order.date_start;
+        updateEditTimeSlots();
+        document.getElementById('editTimeSelect').value = order.time_start;
 
-                try {
-                    const res = await fetch(`${API_BASE}/orders/${selectedOrderId}?api_key=${API_KEY}`, {
-                        method: 'PUT',
-                        headers: {'Content-Type': 'application/json'},
-                        body: JSON.stringify(data)
-                    });
-                    if (!res.ok) throw new Error('Ошибка редактирования');
-                    showNotification('Заявка обновлена');
-                    closeOverlay('editOrderModalOverlay');
-                    load_orders();
-                } catch (e) {
-                    showNotification('Ошибка: ' + e.message, 'danger');
-                }
-            };
-        })
-        .catch(e => showNotification('Ошибка: ' + e.message, 'danger'));
+        // Слушатели
+        dateSelect.addEventListener('change', updateEditTimeSlots);
+        document.getElementById('editStudentsCount').addEventListener('input', calculateEditCourseCost);
+        document.querySelectorAll('#editOrderForm .form-check-input').forEach(chk => {
+            chk.addEventListener('change', calculateEditCourseCost);
+        });
+
+        document.getElementById('saveEditBtn').addEventListener('click', submitEditCourseApply);
+
+        // показываем
+        overlay.classList.add('active');
+
+        // Закрытие по overlay
+        overlay.addEventListener('click', e => {
+            if (e.target === overlay) closeOverlay('editOrderModalOverlay');
+        });
+
+        // Начальный расчет
+        calculateEditCourseCost();
+    } catch (e) {
+        showNotification('Ошибка: ' + e.message, 'danger');
+    }
 }
 
-// Утилиты
+// Время по дате для редактирования
+function updateEditTimeSlots() {
+    const date = document.getElementById('editStartDateSelect').value;
+    const timeSelect = document.getElementById('editTimeSelect');
+    timeSelect.innerHTML = '<option value="">Выберите время</option>';
+    timeSelect.disabled = !date;
+
+    if (date) {
+        const times = editingCourseData.start_dates
+            .filter(dt => dt.startsWith(date))
+            .map(dt => dt.split('T')[1].substring(0, 5));
+
+        times.forEach(t => {
+            const end = addHours(t, editingCourseData.week_length);
+            const opt = document.createElement('option');
+            opt.value = t;
+            opt.textContent = `${t} – ${end}`;
+            timeSelect.appendChild(opt);
+        });
+    }
+
+    const weeks = editingCourseData.total_length;
+    const start = new Date(date);
+    const end = new Date(start);
+    end.setDate(start.getDate() + weeks * 7);
+    document.getElementById('editDurationInfo').value = `${weeks} недель (окончание: ${end.toLocaleDateString('ru-RU')})`;
+
+    calculateEditCourseCost();
+}
+
+function addHours(time, hours) {
+    const [h, m] = time.split(':').map(Number);
+    return `${(h + hours).toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}`;
+}
+
+let groupEnrollment = false; //групповая заявка (флаг для студентов)
+let earlyReg = false; //рання регистрация (больше чем за месяц)
+
+// Расчёт стоимости для редактирования
+function calculateEditCourseCost() {
+    const students = parseInt(document.getElementById('editStudentsCount').value) || 1;
+    const time = document.getElementById('editTimeSelect').value;
+    if (!time) return document.getElementById('editTotalCost').value = '0 руб';
+
+    let base = editingCourseData.course_fee_per_hour * editingCourseData.total_length * editingCourseData.week_length;
+
+    // Weekend
+    const day = new Date(document.getElementById('editStartDateSelect').value).getDay();
+    if (day === 0 || day === 6) base *= 1.5;
+
+    // Morning/evening
+    const hour = parseInt(time.split(':')[0]);
+    base += ((hour >= 9 && hour < 12) ? 400 : 0) * students;
+    base += ((hour >= 18 && hour < 20) ? 1000 : 0) * students;
+
+    // * students
+    base *= students;
+
+    // Опции
+    if (document.getElementById('editSupplementary').checked) base += 2000 * students;
+    if (document.getElementById('editPersonalized').checked) base += 1500 * editingCourseData.total_length;
+    if (document.getElementById('editExcursions').checked) base *= 1.25;
+    if (document.getElementById('editAssessment').checked) base += 300;
+    if (document.getElementById('editInteractive').checked) base *= 1.5;
+    if (document.getElementById('editIntensiveCourse').checked) base *= 1.2;
+
+
+    //АВТОМАТИЧЕСКИЕ СКИДКИ
+    const startDate = new Date(document.getElementById('editStartDateSelect').value);
+    const today = new Date();
+    
+    startDate.setHours(0, 0, 0, 0);
+    today.setHours(0, 0, 0, 0);
+    
+    // Расчет разницы в месяцах
+    const monthsDiff = (startDate.getFullYear() - today.getFullYear()) * 12 +  (startDate.getMonth() - today.getMonth());
+    
+    // Если разница больше 1 месяца (больше чем за месяц)
+    if (monthsDiff > 1 || (monthsDiff === 1 && startDate.getDate() >= today.getDate())) {
+        base *= 0.9; // Скидка 10%
+        earlyReg = true;
+    } else {
+        earlyReg = false;
+    }
+    
+    // Групповая скидка
+    if (students >= 5) {
+        base *= 0.85;
+        groupEnrollment = true;
+    } else {
+        groupEnrollment = false;
+    };
+    
+    if (editingCourseData.week_length >= 5) base *= 1.2;
+
+    document.getElementById('editTotalCost').value = Math.round(base) + ' руб';
+}
+
+// Отправка редактирования (PUT)
+async function submitEditCourseApply() {
+    calculateEditCourseCost();
+    const data = {
+        course_id: editingCourseData.id,
+        tutor_id: 0,
+        date_start: document.getElementById('editStartDateSelect').value,
+        time_start: document.getElementById('editTimeSelect').value,
+        duration: editingCourseData.total_length * editingCourseData.week_length,
+        persons: parseInt(document.getElementById('editStudentsCount').value),
+        price: parseInt(document.getElementById('editTotalCost').value.replace(' руб', '')),
+        supplementary: document.getElementById('editSupplementary').checked,
+        personalized: document.getElementById('editPersonalized').checked,
+        excursions: document.getElementById('editExcursions').checked,
+        assessment: document.getElementById('editAssessment').checked,
+        interactive: document.getElementById('editInteractive').checked,
+        intensive_course: document.getElementById('editIntensiveCourse').checked,
+        group_enrollment: groupEnrollment,
+        early_registration: earlyReg
+    };
+
+    try {
+        const res = await fetch(`${API_BASE}/orders/${selectedOrderId}?api_key=${API_KEY}`, {
+            method: 'PUT',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(data)
+        });
+        if (!res.ok) {
+            alert("❌❌❌Ошибка! Студентов должно быть не более 20!❌❌❌");
+            throw new Error('Ошибка');
+        };
+        console.log('Заявка обновлена!');
+        closeOverlay('editOrderModalOverlay');
+        showNotification('Заявка изменена!', 'success');
+        window.load_orders();
+    } catch (e) {
+        showNotification('Не удалось изменить заявку!', 'danger');
+        console.error(e);
+    }
+}
+
 function createOverlay(id) {
     let overlay = document.getElementById(id);
     if (!overlay) {
